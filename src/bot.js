@@ -1,10 +1,13 @@
-require('dotenv').config();
+const dot = require('dotenv').config();
 const { Client, MessageEmbed , GuildEmoji, Emoji} = require('discord.js');
 const client = new Client;
 const PREFIX = '$';
 const date = new Date();
 let Notes = [];
 const fs = require('fs');
+const hello = require('./response.js');
+let val = hello.Hello();
+console.log(val);
 
 // Load History Data
 LoadJson();
