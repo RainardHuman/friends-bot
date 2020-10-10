@@ -5,6 +5,7 @@ const PREFIX = '$';
 const date = new Date();
 let Notes = [];
 const fs = require('fs');
+const { title } = require('process');
 
 // Load History Data
 LoadJson();
@@ -105,7 +106,7 @@ client.on('message', (message) => {
                     let note = {
                         author: message.author,
                         title: args[1].trim(),
-                        message: message.content.split(',')[1]
+                        message: args.slice(2).join(' ')
                     }
                     Notes.push(
                         {...note, dateTime: new Date().getDate()}
@@ -155,12 +156,17 @@ client.on('message', (message) => {
             if (args[0] === 'delete') {
                 if (args[1]){
                     let index = -1;
-                    index = Notes.findIndex(note => note.title === args[1] && note.author.id === message.author.id);
-                    if (index > -1) {
-                        Notes.splice(index,1);
-                        WriteJson(Notes);
+                    if (args[1] === "all"){
+                        Notes = [];
+                        message.reply(Responses.note.delete.all);
                     } else {
-                        message.reply(Responses.note.delete.zero);
+                        index = Notes.findIndex(note => note.title === args[1] && note.author.id === message.author.id);
+                        if (index > -1) {
+                            Notes.splice(index,1);
+                            WriteJson(Notes);
+                        } else {
+                            message.reply(Responses.note.delete.zero);
+                        }
                     }
                 } else {
                     message.reply(Responses.note.delete.no_parm);
@@ -200,6 +206,7 @@ const Responses  = {
         delete: {
             no_parm: 'No note name given to delete, please use \'$note help\' for support ',
             zero: 'No notes found to delete, please use \'$note help\' for support ',
+            all: 'All notes have been deleted ',
         }
     },
     welcome: {
