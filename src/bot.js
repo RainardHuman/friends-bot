@@ -5,7 +5,6 @@ const PREFIX = '$';
 const date = new Date();
 let Notes = [];
 const fs = require('fs');
-const { title } = require('process');
 
 // Load History Data
 LoadJson();
