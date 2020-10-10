@@ -34,7 +34,7 @@ async function getPorn() {
 
     if (response.ok) {
         const x = await response.json();
-        return x[0]['t_url_460'];
+        return x[random]['t_url_460'];
     } else {
         alert("HTTP-Error: " + response.status);
     }
@@ -81,7 +81,6 @@ client.on('message', (message) => {
 
     if (message.content === 'send nudes') {
         getPorn().then(url => {
-            console.log(url);
             message.reply(url);
         })
     }
