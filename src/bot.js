@@ -5,9 +5,43 @@ const PREFIX = '$';
 const date = new Date();
 let Notes = [];
 const fs = require('fs');
+const fetch = require('node-fetch');
 
 // Load History Data
 LoadJson();
+
+
+async function getPorn() {
+    const skip = Math.floor(Math.random() * 50) * 20;
+    const random = Math.floor(Math.random() * 20);
+
+    let response = await fetch("https://www.pornpics.com/getnext.php?type=popular&limit=" + 20 + "&offset=" + skip, {
+        "headers": {
+            "accept": "application/json, text/javascript, */*; q=0.01",
+            "accept-language": "en-US,en;q=0.9",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-origin",
+            "x-requested-with": "XMLHttpRequest"
+        },
+        "referrer": "https://www.pornpics.com/popular/",
+        "referrerPolicy": "unsafe-url",
+        "body": null,
+        "method": "GET",
+        "mode": "cors",
+        "credentials": "include"
+    });
+
+    if (response.ok) {
+        const x = await response.json();
+        return x[0]['t_url_460'];
+    } else {
+        alert("HTTP-Error: " + response.status);
+    }
+}
+
+
+
 
 // Start up log
 console.log(
@@ -44,16 +78,12 @@ client.on('message', (message) => {
         message.react('👍');
     }
 
-    let images = [
-        'https://i.redd.it/bxdphtdcemx11.jpg',
-        'https://content.eroticbeauties.net/content/metart_8c8baf918dffb/cropped/1/lorena-garcia-nude-art_mainthumb_vertical.jpg',
-        'https://content.eroticbeauties.net/content/playboyplus_85da7df4b87e2/cropped/1/playboy-scene-katrine-pirs_mainthumb_vertical@2x.jpg',
-        'https://content.eroticbeauties.net/content/playboyplus_656abef503f83/cropped/1/playboy-model-mel-green_mainthumb_horizontal@2x.jpg',
-        'https://content.eroticbeauties.net/content/stasyq_5004a0db7c0d9/cropped/1/evelynq-nude-art-erotica_mainthumb_horizontal@2x.jpg',
-        'https://content.eroticbeauties.net/content/playboyplus_1c8d4724ebff5/cropped/1/playboy-model-jessica-lawson_mainthumb_horizontal@2x.jpg',
-    ]
+
     if (message.content === 'send nudes') {
-        message.reply(images[Math.floor(Math.random() * images.length)]);
+        getPorn().then(url => {
+            console.log(url);
+            message.reply(url);
+        })
     }
 
 
