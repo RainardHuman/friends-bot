@@ -2,7 +2,7 @@ require('dotenv').config();
 const { Client, MessageEmbed } = require('discord.js');
 const client = new Client;
 const PREFIX = '$';
-const date = new Date();
+const startTime = new Date();
 let Notes = [];
 const fs = require('fs');
 const fetch = require('node-fetch');
@@ -34,7 +34,7 @@ async function getPorn() {
 
     if (response.ok) {
         const x = await response.json();
-        return x[random]['t_url_460'];
+        return x[random]['t_url_460'].replace('460','1280');
     } else {
         alert("HTTP-Error: " + response.status);
     }
@@ -44,8 +44,9 @@ async function getPorn() {
 
 
 // Start up log
+
 console.log(
-    'started:' + date.getDay() + ' ' + date.getMonth() +
+    'started:' + startTime.toDateString() + ', '+ startTime.toTimeString() +
     '\ntoken: ' + process.env.DISCORD_BOT_TOKEN
 );
 
