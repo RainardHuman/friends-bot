@@ -12,7 +12,7 @@ LoadJson();
 
 
 async function getPorn() {
-    const skip = Math.floor(Math.random() * 50) * 20;
+    const skip = Math.floor(Math.random() * 100) * 20;
     const random = Math.floor(Math.random() * 20);
 
     let response = await fetch("https://www.pornpics.com/getnext.php?type=popular&limit=" + 20 + "&offset=" + skip, {
@@ -35,9 +35,9 @@ async function getPorn() {
     if (response.ok) {
         const x = await response.json();
         return {
-            url: x[random]['t_url_460'].replace('460','1280'),
-            desc: x[random]['desc'].replace(x[random]['gid'].toString(),'').trim(),
-            gUrl: x[random]['g_url']
+            url: x[random]['t_url_460'],//.replace('460','1280'),
+            desc: x[random]['desc'].replace(x[random]['gid'].toString(),'[Gallery]('+x[random]['g_url']+')'),
+            
         };
     } else {
         alert("HTTP-Error: " + response.status);
@@ -50,7 +50,7 @@ async function getPorn() {
 // Start up log
 
 console.log(
-    'started:' + startTime.toDateString() + ', '+ startTime.toTimeString() +
+    'started:' + startTime.toLocaleString() +
     '\ntoken: ' + process.env.DISCORD_BOT_TOKEN
 );
 
