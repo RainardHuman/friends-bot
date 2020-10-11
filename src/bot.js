@@ -35,9 +35,9 @@ async function getPorn() {
     if (response.ok) {
         const x = await response.json();
         return {
-            url: x[random]['t_url_460'],//.replace('460','1280'),
+            url: x[random]['t_url_460'].replace('460','1280'),
             desc: x[random]['desc'].replace(x[random]['gid'].toString(),'[Gallery]('+x[random]['g_url']+')'),
-            
+            gurl: x[random]['g_url'],
         };
     } else {
         alert("HTTP-Error: " + response.status);
@@ -86,7 +86,7 @@ client.on('message', (message) => {
 
     if (message.content === 'send nudes') {
         getPorn().then(result => {
-            message.channel.send(result.desc + '.\nVisit: ' + result.gUrl , {files: [result.url]});
+            message.channel.send(result.desc, {files: [result.url]});
         })
     }
 
